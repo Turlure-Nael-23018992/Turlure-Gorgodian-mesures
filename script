@@ -1,0 +1,17 @@
+#!/bin/bash
+
+DOSSIER="."
+
+TOTAL=0
+
+while IFS= read -r -d '' FILE; do
+  COUNT=$(grep -v '^[[:space:]]*$' "$FILE" | \
+          grep -v '^[[:space:]]*#' | \
+          grep -v '^[[:space:]]*//' | \
+          grep -v '^[[:space:]]*/\*' | \
+          grep -v '^[[:space:]]*\*' | \
+          grep -v '^[[:space:]]*\*/' | \
+          wc -l)
+  TOTAL=$((TOTAL + COUNT))
+done < <(find "$DOSSIER" -type f -print0)
+echo "$TOTAL lignes de code"
